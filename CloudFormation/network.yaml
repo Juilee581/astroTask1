@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: vpc-019d1e5f579c6165e
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: ca-central-1a
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: vpc-019d1e5f579c6165e
+      CidrBlock: 10.0.3.0/24
+
+  EIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  VPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: vpc-019d1e5f579c6165e
+      InternetGatewayId: igw-0a04f4b734930ffd2
+
+  NATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: 35.183.173.204
+      SubnetId: subnet-00bb1106bac67edd9
+
+  RouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: vpc-019d1e5f579c6165e
+
+  RouteTablePrivate:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: vpc-019d1e5f579c6165e
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: rtb-0431192e97bb6f84b
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: igw-0a04f4b734930ffd2
