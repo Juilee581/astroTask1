@@ -1,2 +1,4 @@
 .terraform/
 Terraform/modules/alb/.terraform/
+.terraform/
+Terraform/modules/alb/.terraform/
